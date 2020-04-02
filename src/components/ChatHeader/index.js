@@ -2,6 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,45 +17,53 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 
 const useStyles = makeStyles(() => ({
   toolbar: {
+    justifyContent: 'space-between',
+  },
+
+  leftBox: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
-  contactInfo: {
+  contactBox: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
   },
 }));
 
-function App({ contactName, contactAvatar }) {
+function ChatHeader({ contactName, contactAvatar, contactStatus }) {
   const classes = useStyles();
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
-
-        <Box display="flex" flexDirection="row">
+        <Box className={classes.leftBox}>
           <IconButton color="inherit" disabled>
             <ArrowBackIcon />
           </IconButton>
           <IconButton color="inherit">
             <Avatar src={contactAvatar} />
           </IconButton>
-          <Box className={classes.contactInfo}>
-            <Typography variant="h6">{contactName}</Typography>
-            <Typography>online</Typography>
+          <Box className={classes.contactBox}>
+            <Hidden smDown>
+              <Typography variant="h6">{contactName}</Typography>
+            </Hidden>
+            <Hidden mdUp>
+              <Typography>{contactName}</Typography>
+            </Hidden>
+            <Typography>{contactStatus}</Typography>
           </Box>
         </Box>
 
         <Box>
-          <IconButton color="inherit" disabled>
-            <VideocamIcon />
-          </IconButton>
-          <IconButton color="inherit" disabled>
-            <CallIcon />
-          </IconButton>
+          <Hidden smDown>
+            <IconButton color="inherit" disabled>
+              <VideocamIcon />
+            </IconButton>
+            <IconButton color="inherit" disabled>
+              <CallIcon />
+            </IconButton>
+          </Hidden>
           <IconButton color="inherit" disabled>
             <MoreVertIcon />
           </IconButton>
@@ -64,4 +73,4 @@ function App({ contactName, contactAvatar }) {
   );
 }
 
-export default App;
+export default ChatHeader;

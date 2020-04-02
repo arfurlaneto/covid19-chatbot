@@ -1,26 +1,19 @@
 import React, { useEffect, useCallback, useState } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
 
-import Container from '@material-ui/core/Container';
-
-import Header from './components/Header';
-import ChatMessage from './components/ChatMessage';
+import ChatHeader from './components/ChatHeader';
+import ChatBody from './components/ChatBody';
+import ChatFooter from './components/ChatFooter';
 
 import ChatEngine from './ChatEngine';
 import covidDialog from './dialogs/covid19';
 
-const useStyles = makeStyles(() => ({
-  chatContainer: {
-    paddingTop: '20px',
-    marginBottom: '10px;',
-  },
-}));
-
 function App() {
-  const [contactName] = useState('ATENDENTE VIRTUAL COVID-19');
-  const [contactAvatar] = useState('https://i.pravatar.cc/200?img=1');
+  const [botName] = useState('ATENDENTE VIRTUAL COVID-19');
+  const [botAvatar] = useState('https://i.pravatar.cc/200?img=1');
+  const [userName] = useState('Você');
+  const [userAvatar] = useState('https://i.pravatar.cc/200?img=2');
 
   const [engine] = useState(new ChatEngine(covidDialog));
   const [messages, setMessages] = useState([]);
@@ -31,34 +24,30 @@ function App() {
     }
   }, [engine]);
 
-  const handleChooseOption = useCallback(async (option) => {
-    const validOption = await engine.chooseOption(option.id);
-    if (validOption) {
-      const userMessage = engine.renderUserDialog(option.label);
-      setMessages([...messages, userMessage, engine.renderDialog()]);
-    }
-  }, [engine, messages]);
-
-  const classes = useStyles();
+  // const handleChooseOption = useCallback(async (option) => {
+  //   const validOption = await engine.chooseOption(option.id);
+  //   if (validOption) {
+  //     const userMessage = engine.renderUserDialog(option.label);
+  //     setMessages([...messages, userMessage, engine.renderDialog()]);
+  //   }
+  // }, [engine, messages]);
 
   return (
     <>
       <CssBaseline />
-      <Header
-        contactName={contactName}
-        contactAvatar={contactAvatar}
+      <ChatHeader
+        contactName={botName}
+        contactAvatar={botAvatar}
+        contactStatus="online"
       />
-      <Container className={classes.chatContainer}>
-        {messages.map((message) => (
-          <ChatMessage
-            key={message.id}
-            contactName={contactName}
-            contactAvatar={contactAvatar}
-            message={message}
-            onChoose={handleChooseOption}
-          />
-        ))}
-      </Container>
+      <ChatBody
+        messages={messages}
+        contactName={botName}
+        contactAvatar={botAvatar}
+        userName={userName}
+        userAvatar={userAvatar}
+      />
+      <ChatFooter />
     </>
   );
 }
