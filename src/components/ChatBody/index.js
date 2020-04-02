@@ -71,7 +71,9 @@ function App({
 
             <CardContent>
               <Typography variant="body1" color="textSecondary" component="p">
-                {message.text}
+                <span style={{ whiteSpace: 'pre-line' }}>
+                  {message.text}
+                </span>
               </Typography>
             </CardContent>
 

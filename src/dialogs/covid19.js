@@ -1,16 +1,19 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 export default {
+  initialContext: () => ({
+    sintomas: {},
+  }),
   startNodeKey: () => 'inicio',
   restartNodeKey: () => 'reinicio',
   nodes: {
     inicio: {
-      text: (ctx) => `Olá ${ctx.name}. Antes de continuar, clique em uma das opções listadas abaixo:`,
+      text: () => 'Olá!\nDo que você precisa?\nEscolha uma das opções listadas abaixo:',
       attachment: () => null,
       options: () => [
         {
           id: 'pre_diagnostico',
-          label: 'Pré Diagnóstico',
+          label: 'Pré-Diagnóstico',
           callback: () => 'diagnosticoSintomaGripe',
         },
         {
@@ -22,7 +25,7 @@ export default {
     },
 
     reinicio: {
-      text: (ctx) => `Clique em uma das opções listadas abaixo ${ctx.name}:`,
+      text: () => 'Olá!\nPrecisa de mais alguma coisa?\nEscolha uma das opções listadas abaixo:',
       attachment: () => null,
       options: () => [
         {
@@ -44,31 +47,31 @@ export default {
     },
 
     atendimento: {
-      text: () => 'Por favor, entre em contato no telefone ? das ? da manhã até as ? da noite.',
+      text: () => 'Por favor, entre em contato no telefone (??) ????-???? em horário comercial.\nFora do horário comercial acesse o site ?.',
       attachment: () => null,
       options: () => [
       ],
     },
 
     sair: {
-      text: (ctx) => `Obrigado pelo seu acesso ${ctx.name}.\n\n# Caso precise, nos ligue entre ? e ?.`,
+      text: () => 'Obrigado pelo seu acesso!',
       attachment: () => ({
         type: 'image',
-        source: 'https://dhhr.wv.gov/Coronavirus%20Disease-COVID-19/PublishingImages/website%20and%20hotline.JPG',
+        source: 'http://www.blog.saude.gov.br/images/WhatsApp_Image_2020-01-30_at_14.30.13.jpeg',
       }),
       options: () => [
       ],
     },
 
     diagnosticoSintomaGripe: {
-      text: () => '---\nIMPORTANTE: Este diagnóstico virtual NÃO SUBSTITUI A AVALIAÇÃO CLÍNICA PRESENCIAL por equipe de saúde!\n---\n\n'
-        + 'Você está sentindo algum SINTOMA DE GRIPE?',
+      text: () => 'Este diagnóstico virtual NÃO SUBSTITUI A AVALIAÇÃO CLÍNICA PRESENCIAL!\n\n'
+        + 'Sente algum SINTOMA DE GRIPE?',
       attachment: () => null,
       options: () => [
         {
           id: 'sim',
           label: 'SIM',
-          callback: () => {},
+          callback: () => 'diagnostico1',
         },
         {
           id: 'nao',
@@ -79,8 +82,8 @@ export default {
     },
 
     diagnosticoSemSintomaGripe: {
-      text: (ctx) => `${ctx.name}, você não tem suspeita de contaminação pelo NOVO CORONAVIRUS, então não se preocupe\n\n\n`
-        + '# Gostaria de verificar mais alguma coisa?',
+      text: () => 'Você não tem suspeita de contaminação pelo NOVO CORONAVÍRUS.\n\n\n'
+        + 'Gostaria de verificar mais alguma coisa?',
       attachment: () => null,
       options: () => [
         {
@@ -96,25 +99,226 @@ export default {
       ],
     },
 
-    diagnosticoSintomasFaltaAr: {
-      text: () => '1. Sente FALTA DE AR, DIFICULDADE PARA RESPIRAR?',
+    diagnostico1: {
+      text: () => '1. FALTA DE AR?',
       attachment: () => null,
       options: () => [
         {
           id: 'sim',
           label: 'SIM',
-          callback: () => '',
+          callback: (ctx) => { ctx.sintomas.faltaDeAr = true; return 'diagnostico2'; },
         },
         {
           id: 'nao',
           label: 'NÃO',
-          callback: () => '',
+          callback: (ctx) => { ctx.sintomas.faltaDeAr = false; return 'diagnostico2'; },
         },
       ],
     },
 
-    naoImplementado: {
-      text: () => 'Humm... parece que o programador não terminou esta parte aqui :/',
+    diagnostico2: {
+      text: () => '2. FEBRE?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.febre = true; return 'diagnostico3'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.febre = false; return 'diagnostico3'; },
+        },
+      ],
+    },
+
+    diagnostico3: {
+      text: () => '3. TOSSE?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.tosse = true; return 'diagnostico4'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.tosse = false; return 'diagnostico4'; },
+        },
+      ],
+    },
+
+    diagnostico4: {
+      text: () => '4. Dificuldade para URINAR?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.urina = true; return 'diagnostico5'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.urina = false; return 'diagnostico5'; },
+        },
+      ],
+    },
+
+    diagnostico5: {
+      text: () => '5.  MANCHAS ou ERUPÇÕES NA PELE recentes?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.rash = true; return 'diagnostico6'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.rash = false; return 'diagnostico6'; },
+        },
+      ],
+    },
+
+    diagnostico6: {
+      text: () => '6. CANSAÇO, DOR NO CORPO ou MAL ESTAR?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.cansaco = true; return 'diagnostico7'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.cansaco = false; return 'diagnostico7'; },
+        },
+      ],
+    },
+
+    diagnostico7: {
+      text: () => '7. DOR DE GARGANTA?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.dorGarganta = true; return 'diagnostico8'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.dorGarganta = false; return 'diagnostico8'; },
+        },
+      ],
+    },
+
+    diagnostico8: {
+      text: () => '8. DOR DE CABEÇA?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.dorCabeca = true; return 'diagnostico9'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.dorCabeca = false; return 'diagnostico9'; },
+        },
+      ],
+    },
+
+    diagnostico9: {
+      text: () => '9. CORIZA ou NARIZ ENTUPIDO?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.coriza = true; return 'diagnostico10'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.coriza = false; return 'diagnostico10'; },
+        },
+      ],
+    },
+
+    diagnostico10: {
+      text: () => '10. ESPIRROS?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.espirros = true; return 'diagnostico11'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.espirros = false; return 'diagnostico11'; },
+        },
+      ],
+    },
+
+    diagnostico11: {
+      text: () => '11. PERDA DO PALADAR?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.perdaPaladar = true; return 'diagnostico12'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.perdaPaladar = false; return 'diagnostico12'; },
+        },
+      ],
+    },
+
+    diagnostico12: {
+      text: () => '12. PERDA DO OLFATO?',
+      attachment: () => null,
+      options: () => [
+        {
+          id: 'sim',
+          label: 'SIM',
+          callback: (ctx) => { ctx.sintomas.perdaOlfato = true; return 'diagnosticoFinal'; },
+        },
+        {
+          id: 'nao',
+          label: 'NÃO',
+          callback: (ctx) => { ctx.sintomas.perdaOlfato = false; return 'diagnosticoFinal'; },
+        },
+      ],
+    },
+
+    diagnosticoFinal: {
+      text: (ctx) => 'Pontuação das suas respostas:\n\n'
+        + `Falta de Ar: ${ctx.sintomas.faltaDeAr ? 4 : 0} \n`
+        + `Febre: ${ctx.sintomas.febre ? 4 : 0} \n`
+        + `Tosse: ${ctx.sintomas.tosse ? 3 : 0} \n`
+        + `Alteração da Urina: ${ctx.sintomas.urina ? 3 : 0} \n`
+        + `Manchas: ${ctx.sintomas.rash ? 3 : 0} \n`
+        + `Cansaço: ${ctx.sintomas.cansaco ? 1 : 0} \n`
+        + `Dor de Garganta: ${ctx.sintomas.dorGarganta ? 1 : 0} \n`
+        + `Dor de Cabeça: ${ctx.sintomas.dorCabeca ? 1 : 0} \n`
+        + `Coriza: ${ctx.sintomas.coriza ? 1 : 0} \n`
+        + `Espirros: ${ctx.sintomas.espirros ? 1 : 0} \n`
+        + `Perda do Paladar: ${ctx.sintomas.perdaPaladar ? 1 : 0} \n`
+        + `Perda do Olfato: ${ctx.sintomas.perdaOlfato ? 1 : 0} \n`
+        + '\nDetalhamento dos Pontos:\n\n'
+        + '0-7 Quadro Clínico LEVE;\n8-11 Quadro Clínico MODERADO;\n12-24 Quadro Clínico EXACERBADO.',
       attachment: () => null,
       options: () => [
       ],

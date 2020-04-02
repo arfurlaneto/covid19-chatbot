@@ -1,7 +1,7 @@
 export default class ChatEngine {
   constructor(dialog, initialContext) {
     this.dialog = dialog;
-    this.context = { ...initialContext };
+    this.context = { ...initialContext, ...dialog.initialContext() };
   }
 
   start() {
@@ -65,6 +65,7 @@ export default class ChatEngine {
     return text
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
+      .replace('-', '')
       .replace(/\s/g, '')
       .toLowerCase();
   }
