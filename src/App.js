@@ -20,17 +20,15 @@ function App() {
 
   useEffect(() => {
     if (engine) {
-      setMessages([engine.renderDialog()]);
+      setMessages(engine.start());
     }
   }, [engine]);
 
-  // const handleChooseOption = useCallback(async (option) => {
-  //   const validOption = await engine.chooseOption(option.id);
-  //   if (validOption) {
-  //     const userMessage = engine.renderUserDialog(option.label);
-  //     setMessages([...messages, userMessage, engine.renderDialog()]);
-  //   }
-  // }, [engine, messages]);
+  const handleUserText = useCallback(async (data) => {
+    const userText = typeof (data) === 'string' ? data : data.label;
+    const newMessages = await engine.handleUserText(userText);
+    setMessages([...messages, ...newMessages]);
+  }, [engine, messages]);
 
   return (
     <>
@@ -46,8 +44,11 @@ function App() {
         contactAvatar={botAvatar}
         userName={userName}
         userAvatar={userAvatar}
+        onOption={handleUserText}
       />
-      <ChatFooter />
+      <ChatFooter
+        onText={handleUserText}
+      />
     </>
   );
 }

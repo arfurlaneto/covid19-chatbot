@@ -1,42 +1,33 @@
 export default class ChatEngine {
-  constructor(dialog, context) {
+  constructor(dialog, initialContext) {
     this.dialog = dialog;
-    this.context = { ...context };
-    this.currentNode = dialog.startNode(this.context);
+    this.context = { ...initialContext };
   }
 
-  get currentDialogNode() {
-    return this.dialog.nodes[this.currentNode];
+  start() {
+    this.currentNodeKey = this.dialog.startNodeKey(this.context);
+    return [this.renderMessage()];
   }
 
-  renderDialog() {
-    const dialogNode = this.currentDialogNode;
+  get currentNode() {
+    return this.dialog.nodes[this.currentNodeKey];
+  }
+
+  renderMessage() {
+    const node = this.currentNode;
     const data = {
       key: new Date().getTime(),
       user: false,
       date: new Date(),
-      text: dialogNode.text(this.context),
-      attachment: dialogNode.attachment(this.context),
-      options: dialogNode.options(this.context),
+      text: node.text(this.context),
+      attachment: node.attachment(this.context),
+      options: node.options(this.context),
     };
     return data;
   }
 
-  async chooseOption(optionId) {
-    const dialogNode = this.currentDialogNode;
-    const dialogOptions = dialogNode.options(this.context);
-    const selectedOption = dialogOptions.find((o) => o.id === optionId);
-
-    if (!selectedOption) {
-      return false;
-    }
-
-    this.currentNode = await selectedOption.callback(this.context);
-    return true;
-  }
-
   // eslint-disable-next-line class-methods-use-this
-  renderUserDialog(message) {
+  createUserMessage(message) {
     return {
       key: new Date().getTime(),
       user: true,
@@ -45,5 +36,36 @@ export default class ChatEngine {
       attachment: null,
       options: [],
     };
+  }
+
+  async handleUserText(text) {
+    const userMessage = this.createUserMessage(text);
+
+    const nodeOptions = this.currentNode.options(this.context);
+
+    if (nodeOptions.length === 0) {
+      this.currentNodeKey = this.dialog.restartNodeKey(this.context);
+    } else {
+      const foundOption = nodeOptions
+        .map((option) => ({
+          id: ChatEngine.normalizeText(option.label),
+          option,
+        }))
+        .find((o) => o.id === ChatEngine.normalizeText(text));
+
+      if (foundOption) {
+        this.currentNodeKey = await foundOption.option.callback(this.context);
+      }
+    }
+
+    return [userMessage, this.renderMessage()];
+  }
+
+  static normalizeText(text) {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s/g, '')
+      .toLowerCase();
   }
 }

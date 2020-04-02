@@ -39,14 +39,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChatFooter({ onMessage }) {
-  const [message, setMessage] = useState('');
+function ChatFooter({ onText }) {
+  const [text, setText] = useState('');
 
-  const handleSendMessage = useCallback(() => {
-    if (onMessage) {
-      onMessage(message);
+  const handleSendText = useCallback(() => {
+    if (onText) {
+      onText(text);
+      setText('');
     }
-  }, [message, onMessage]);
+  }, [text, onText]);
 
   const classes = useStyles();
   return (
@@ -56,19 +57,19 @@ function ChatFooter({ onMessage }) {
           <TextField
             className={classes.textField}
             placeholder="Digite uma mensagem"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
         </Paper>
 
         <Button
           className={classes.button}
-          disabled={!(message && message.trim())}
+          disabled={!(text && text.trim())}
           size="large"
           variant="contained"
           color="primary"
           endIcon={<Icon>send</Icon>}
-          onClick={handleSendMessage}
+          onClick={handleSendText}
         >
           Enviar
         </Button>

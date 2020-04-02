@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 export default {
-  startNode: () => 'inicio',
+  startNodeKey: () => 'inicio',
+  restartNodeKey: () => 'reinicio',
   nodes: {
     inicio: {
       text: (ctx) => `Olá ${ctx.name}. Antes de continuar, clique em uma das opções listadas abaixo:`,

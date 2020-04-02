@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -15,7 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles(() => ({
   container: {
     paddingTop: '100px',
-    paddingBottom: '50px',
+    paddingBottom: '60px',
   },
 
   contactCard: {
@@ -34,6 +34,14 @@ const useStyles = makeStyles(() => ({
 function App({
   contactName, contactAvatar, userName, userAvatar, messages, onOption,
 }) {
+  const [endEl, setEndEl] = useState(null);
+
+  useEffect(() => {
+    if (endEl) {
+      endEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   const handleChooseOption = useCallback((option) => {
     if (onOption) {
       onOption(option);
@@ -44,36 +52,47 @@ function App({
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      {messages.map((message) => (
-        <Card
-          key={message.key}
-          variant="outlined"
-          className={message.user ? classes.userCard : classes.contactCard}
-        >
-          <CardHeader
-            title={message.user ? userName : contactName}
-            avatar={<Avatar src={message.user ? userAvatar : contactAvatar} />}
-            subheader={message.date.toLocaleString()}
-          />
+      {messages.map((message) => {
+        const isLast = (message === messages[messages.length - 1]);
+        return (
+          <Card
+            key={message.key}
+            variant="outlined"
+            className={message.user ? classes.userCard : classes.contactCard}
+          >
+            <CardHeader
+              title={message.user ? userName : contactName}
+              avatar={<Avatar src={message.user ? userAvatar : contactAvatar} />}
+              subheader={message.date.toLocaleString()}
+            />
 
-          {message.attachment && message.attachment.type === 'image'
+            {message.attachment && message.attachment.type === 'image'
             && (<CardMedia component="img" src={message.attachment.source} />)}
 
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
-              {message.text}
-            </Typography>
-          </CardContent>
+            <CardContent>
+              <Typography variant="body1" color="textSecondary" component="p">
+                {message.text}
+              </Typography>
+            </CardContent>
 
-          <CardActions>
-            {message.options.map((option) => (
-              <Button key={option.id} onClick={() => handleChooseOption(option)}>
-                {option.label}
-              </Button>
-            ))}
-          </CardActions>
-        </Card>
-      ))}
+            <CardActions>
+              {message.options.map((option) => (
+                <Button
+                  key={option.id}
+                  disabled={!isLast}
+                  onClick={() => handleChooseOption(option)}
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </CardActions>
+          </Card>
+        );
+      })}
+      <div
+        style={{ float: 'left', clear: 'both' }}
+        ref={(el) => setEndEl(el)}
+      />
     </Container>
   );
 }
