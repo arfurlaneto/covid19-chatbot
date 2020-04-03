@@ -13,3 +13,5 @@ yarn run start
 ```
 ## Customizando
 Para customizar o dialógo, edite o arquivo `src/dialogs/covid19.js`.
+## Screenshots
+![GitHub Logo](/.github/web_01.png)
