@@ -40,7 +40,7 @@ function App({
     if (endEl) {
       endEl.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages, endEl]);
 
   const handleChooseOption = useCallback((option) => {
     if (onOption) {
