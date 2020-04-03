@@ -12,6 +12,8 @@ yarn install
 yarn run start
 ```
 ## Customizando
+Para customizar as informações do bot ou do usuário, edite o arquivo `src/config.js`.
+
 Para customizar o dialógo, edite o arquivo `src/dialogs/covid19.js`.
 
 Segue uma breve descrição breve do formato do arquivo:
@@ -75,6 +77,8 @@ export default {
             
             /*
                 Função que será executada quando a opção for selecionada.
+                É executado de forma assíncrona pelo sistema de chat.
+                É aqui que as alterações nas variáveis de contexto geralmente são feitas.
                 Deve retornar o identificador do próximo nó de conversa a ser exibido.
             */
             callback: ctx => '',
