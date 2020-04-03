@@ -30,7 +30,7 @@ export default {
       options: () => [
         {
           id: 'pre_diagnostico',
-          label: 'Pré Diagnóstico',
+          label: 'Pré-Diagnóstico',
           callback: () => 'diagnosticoSintomaGripe',
         },
         {
@@ -47,7 +47,7 @@ export default {
     },
 
     atendimento: {
-      text: () => 'Por favor, entre em contato no telefone (??) ????-???? em horário comercial.\nFora do horário comercial acesse o site ?.',
+      text: () => 'Por favor, entre em contato no telefone ? em horário comercial.\nFora do horário comercial acesse o site ?.',
       attachment: () => null,
       options: () => [
       ],
@@ -82,7 +82,7 @@ export default {
     },
 
     diagnosticoSemSintomaGripe: {
-      text: () => 'Você não tem suspeita de contaminação pelo NOVO CORONAVÍRUS.\n\n\n'
+      text: () => 'Você não tem suspeita de contaminação pelo NOVO CORONAVÍRUS.\n\n'
         + 'Gostaria de verificar mais alguma coisa?',
       attachment: () => null,
       options: () => [
@@ -151,7 +151,7 @@ export default {
     },
 
     diagnostico4: {
-      text: () => '4. Dificuldade para URINAR?',
+      text: () => '4. DIFICULDADE PARA URINAR?',
       attachment: () => null,
       options: () => [
         {
@@ -168,24 +168,24 @@ export default {
     },
 
     diagnostico5: {
-      text: () => '5.  MANCHAS ou ERUPÇÕES NA PELE recentes?',
+      text: () => '5.  MANCHAS OU ERUPÇÕES NA PELE?',
       attachment: () => null,
       options: () => [
         {
           id: 'sim',
           label: 'SIM',
-          callback: (ctx) => { ctx.sintomas.rash = true; return 'diagnostico6'; },
+          callback: (ctx) => { ctx.sintomas.manchas = true; return 'diagnostico6'; },
         },
         {
           id: 'nao',
           label: 'NÃO',
-          callback: (ctx) => { ctx.sintomas.rash = false; return 'diagnostico6'; },
+          callback: (ctx) => { ctx.sintomas.manchas = false; return 'diagnostico6'; },
         },
       ],
     },
 
     diagnostico6: {
-      text: () => '6. CANSAÇO, DOR NO CORPO ou MAL ESTAR?',
+      text: () => '6. CANSAÇO, DOR NO CORPO OU MAL ESTAR?',
       attachment: () => null,
       options: () => [
         {
@@ -236,7 +236,7 @@ export default {
     },
 
     diagnostico9: {
-      text: () => '9. CORIZA ou NARIZ ENTUPIDO?',
+      text: () => '9. CORIZA OU NARIZ ENTUPIDO?',
       attachment: () => null,
       options: () => [
         {
@@ -304,21 +304,44 @@ export default {
     },
 
     diagnosticoFinal: {
-      text: (ctx) => 'Pontuação das suas respostas:\n\n'
+      text: (ctx) => {
+        const pontuacao = (ctx.sintomas.faltaDeAr ? 4 : 0)
+        + (ctx.sintomas.febre ? 4 : 0)
+        + (ctx.sintomas.tosse ? 3 : 0)
+        + (ctx.sintomas.urina ? 3 : 0)
+        + (ctx.sintomas.manchas ? 3 : 0)
+        + (ctx.sintomas.cansaco ? 1 : 0)
+        + (ctx.sintomas.dorGarganta ? 1 : 0)
+        + (ctx.sintomas.dorCabeca ? 1 : 0)
+        + (ctx.sintomas.coriza ? 1 : 0)
+        + (ctx.sintomas.espirros ? 1 : 0)
+        + (ctx.sintomas.perdaPaladar ? 1 : 0)
+        + (ctx.sintomas.perdaOlfato ? 1 : 0);
+
+        // eslint-disable-next-line no-nested-ternary
+        const situacao = pontuacao <= 7
+          ? 'Quadro Clínico Leve'
+          : (pontuacao <= 11 ? 'Quadro Clínico Moderado' : 'Quadro Clínico Exacerbado');
+
+        const text = 'Pontuação das suas respostas:\n\n'
         + `Falta de Ar: ${ctx.sintomas.faltaDeAr ? 4 : 0} \n`
         + `Febre: ${ctx.sintomas.febre ? 4 : 0} \n`
         + `Tosse: ${ctx.sintomas.tosse ? 3 : 0} \n`
         + `Alteração da Urina: ${ctx.sintomas.urina ? 3 : 0} \n`
-        + `Manchas: ${ctx.sintomas.rash ? 3 : 0} \n`
+        + `Manchas: ${ctx.sintomas.manchas ? 3 : 0} \n`
         + `Cansaço: ${ctx.sintomas.cansaco ? 1 : 0} \n`
         + `Dor de Garganta: ${ctx.sintomas.dorGarganta ? 1 : 0} \n`
         + `Dor de Cabeça: ${ctx.sintomas.dorCabeca ? 1 : 0} \n`
         + `Coriza: ${ctx.sintomas.coriza ? 1 : 0} \n`
         + `Espirros: ${ctx.sintomas.espirros ? 1 : 0} \n`
         + `Perda do Paladar: ${ctx.sintomas.perdaPaladar ? 1 : 0} \n`
-        + `Perda do Olfato: ${ctx.sintomas.perdaOlfato ? 1 : 0} \n`
-        + '\nDetalhamento dos Pontos:\n\n'
-        + '0-7 Quadro Clínico LEVE;\n8-11 Quadro Clínico MODERADO;\n12-24 Quadro Clínico EXACERBADO.',
+        + `Perda do Olfato: ${ctx.sintomas.perdaOlfato ? 1 : 0} \n\n`
+        + `Sua pontuação: ${pontuacao} pontos.\nSua Situação: ${situacao}.\n\n`
+        + 'Detalhamento dos Pontos\n\n'
+        + '0-7 Quadro Clínico Leve\n8-11 Quadro Clínico Moderado\n12-24 Quadro Clínico Exacerbado.';
+
+        return text;
+      },
       attachment: () => null,
       options: () => [
       ],
