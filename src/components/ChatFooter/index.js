@@ -42,7 +42,10 @@ const useStyles = makeStyles(() => ({
 function ChatFooter({ onText }) {
   const [text, setText] = useState('');
 
-  const handleSendText = useCallback(() => {
+  const handleSendText = useCallback((e) => {
+    if (e) {
+      e.preventDefault();
+    }
     if (onText) {
       onText(text);
       setText('');
@@ -54,12 +57,14 @@ function ChatFooter({ onText }) {
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
         <Paper className={classes.textFieldPaper}>
-          <TextField
-            className={classes.textField}
-            placeholder="Digite uma mensagem"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+          <form onSubmit={handleSendText}>
+            <TextField
+              className={classes.textField}
+              placeholder="Digite uma mensagem"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </form>
         </Paper>
 
         <Button
