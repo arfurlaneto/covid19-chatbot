@@ -29,7 +29,7 @@ export default class ChatEngine {
   // eslint-disable-next-line class-methods-use-this
   createUserMessage(message) {
     return {
-      key: new Date().getTime(),
+      key: new Date().getTime() - 1,
       user: true,
       date: new Date(),
       text: message,
