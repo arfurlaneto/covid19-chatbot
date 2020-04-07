@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,8 +42,11 @@ const useStyles = makeStyles(() => ({
 function ChatFooter({ onText }) {
   const [text, setText] = useState('');
 
+  const inputEl = useRef(null);
+
   const handleSendText = useCallback((e) => {
     e.preventDefault();
+    inputEl.current.blur();
     if (onText) {
       onText(text);
       setText('');
@@ -61,6 +64,7 @@ function ChatFooter({ onText }) {
               placeholder="Digite uma mensagem"
               value={text}
               onChange={(e) => setText(e.target.value)}
+              inputRef={inputEl}
             />
           </Paper>
 
