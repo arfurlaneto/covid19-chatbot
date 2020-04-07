@@ -37,7 +37,7 @@ function App({
   const endElRef = useRef(null);
 
   useEffect(() => {
-    endElRef.current.scrollIntoView({ behavior: 'smooth' });
+    endElRef.current.scrollIntoView({ behavior: 'instant' });
   }, [messages]);
 
   const handleChooseOption = useCallback((option) => {
