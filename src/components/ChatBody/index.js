@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -34,13 +34,11 @@ const useStyles = makeStyles(() => ({
 function App({
   contactName, contactAvatar, userName, userAvatar, messages, onOption,
 }) {
-  const [endEl, setEndEl] = useState(null);
+  const endElRef = useRef(null);
 
   useEffect(() => {
-    if (endEl) {
-      endEl.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, endEl]);
+    endElRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleChooseOption = useCallback((option) => {
     if (onOption) {
@@ -91,10 +89,7 @@ function App({
           </Card>
         );
       })}
-      <div
-        style={{ float: 'left', clear: 'both' }}
-        ref={(el) => setEndEl(el)}
-      />
+      <div style={{ float: 'left', clear: 'both' }} ref={endElRef} />
     </Container>
   );
 }
