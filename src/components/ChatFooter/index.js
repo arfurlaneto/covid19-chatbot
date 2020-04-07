@@ -43,9 +43,7 @@ function ChatFooter({ onText }) {
   const [text, setText] = useState('');
 
   const handleSendText = useCallback((e) => {
-    if (e) {
-      e.preventDefault();
-    }
+    e.preventDefault();
     if (onText) {
       onText(text);
       setText('');
@@ -54,32 +52,32 @@ function ChatFooter({ onText }) {
 
   const classes = useStyles();
   return (
-    <AppBar position="fixed" color="primary" className={classes.appBar}>
-      <Toolbar className={classes.toolbar}>
-        <Paper className={classes.textFieldPaper}>
-          <form onSubmit={handleSendText}>
+    <form onSubmit={handleSendText}>
+      <AppBar position="fixed" color="primary" className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
+          <Paper className={classes.textFieldPaper}>
             <TextField
               className={classes.textField}
               placeholder="Digite uma mensagem"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
-          </form>
-        </Paper>
+          </Paper>
 
-        <Button
-          className={classes.button}
-          disabled={!(text && text.trim())}
-          size="large"
-          variant="contained"
-          color="primary"
-          endIcon={<Icon>send</Icon>}
-          onClick={handleSendText}
-        >
-          Enviar
-        </Button>
-      </Toolbar>
-    </AppBar>
+          <Button
+            type="submit"
+            className={classes.button}
+            disabled={!(text && text.trim())}
+            size="large"
+            variant="contained"
+            color="primary"
+            endIcon={<Icon>send</Icon>}
+          >
+            Enviar
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </form>
   );
 }
 
