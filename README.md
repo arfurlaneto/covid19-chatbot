@@ -1,4 +1,4 @@
-# Covid-19 Chatbot
+# Simple Chatbot
 ## Descrição
 Chatbot muito simples baseado na escolha de opções pré-determinadas.
 
