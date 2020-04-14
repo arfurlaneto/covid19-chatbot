@@ -2,33 +2,32 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import Hidden from '@material-ui/core/Hidden';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+import {
+  Hidden,
+  Box,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Avatar,
+} from '@material-ui/core';
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CallIcon from '@material-ui/icons/Call';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import VideocamIcon from '@material-ui/icons/Videocam';
+import {
+  ArrowBack as ArrowBackIcon,
+  Call as CallIcon,
+  MoreVert as MoreVertIcon,
+  Videocam as VideocamIcon,
+} from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   toolbar: {
-    justifyContent: 'space-between',
-  },
-
-  leftBox: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   contactBox: {
     display: 'flex',
-    flexDirection: 'column',
+    alignItems: 'center',
   },
 }));
 
@@ -37,14 +36,15 @@ function ChatHeader({ contactName, contactAvatar, contactStatus }) {
   return (
     <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
-        <Box className={classes.leftBox}>
+
+        <Box className={classes.contactBox}>
           <IconButton color="inherit" disabled>
             <ArrowBackIcon />
           </IconButton>
           <IconButton color="inherit">
             <Avatar src={contactAvatar} />
           </IconButton>
-          <Box className={classes.contactBox}>
+          <Box>
             <Hidden smDown>
               <Typography variant="h6">{contactName}</Typography>
             </Hidden>
@@ -68,6 +68,7 @@ function ChatHeader({ contactName, contactAvatar, contactStatus }) {
             <MoreVertIcon />
           </IconButton>
         </Box>
+
       </Toolbar>
     </AppBar>
   );
