@@ -2,40 +2,40 @@ import React, { useCallback, useState, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  TextField,
+  Button,
+  Icon,
+} from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   appBar: {
     top: 'auto',
     bottom: 0,
     background: 'transparent',
-    boxShadow: 'none',
     border: 0,
+    boxShadow: 'none',
   },
 
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-
-  textFieldPaper: {
+  textFieldContainer: {
     flexGrow: 1,
+    display: 'flex',
     marginRight: '10px',
     padding: '8px 20px',
     borderRadius: '10px',
   },
 
   textField: {
-    width: '100%',
+    flexGrow: 1,
   },
 
   button: {
-    height: '100%',
+    paddingTop: '11px',
+    paddingBottom: '11px',
+    borderRadius: '10px',
   },
 }));
 
@@ -54,11 +54,13 @@ function ChatFooter({ onText }) {
   }, [text, onText]);
 
   const classes = useStyles();
+
   return (
     <form onSubmit={handleSendText}>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
-          <Paper className={classes.textFieldPaper}>
+
+        <Toolbar>
+          <Paper className={classes.textFieldContainer}>
             <TextField
               className={classes.textField}
               placeholder="Digite uma mensagem"
@@ -67,10 +69,9 @@ function ChatFooter({ onText }) {
               inputRef={inputEl}
             />
           </Paper>
-
           <Button
-            type="submit"
             className={classes.button}
+            type="submit"
             disabled={!(text && text.trim())}
             size="large"
             variant="contained"
