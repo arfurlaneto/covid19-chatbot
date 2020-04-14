@@ -34,43 +34,46 @@ const useStyles = makeStyles(() => ({
 function ChatHeader({ contactName, contactAvatar, contactStatus }) {
   const classes = useStyles();
   return (
-    <AppBar position="fixed">
-      <Toolbar className={classes.toolbar}>
+    <>
+      <AppBar position="fixed">
+        <Toolbar className={classes.toolbar}>
 
-        <Box className={classes.contactBox}>
-          <IconButton color="inherit" disabled>
-            <ArrowBackIcon />
-          </IconButton>
-          <IconButton color="inherit">
-            <Avatar src={contactAvatar} />
-          </IconButton>
+          <Box className={classes.contactBox}>
+            <IconButton color="inherit" disabled>
+              <ArrowBackIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <Avatar src={contactAvatar} />
+            </IconButton>
+            <Box>
+              <Hidden smDown>
+                <Typography variant="h6">{contactName}</Typography>
+              </Hidden>
+              <Hidden mdUp>
+                <Typography>{contactName}</Typography>
+              </Hidden>
+              <Typography>{contactStatus}</Typography>
+            </Box>
+          </Box>
+
           <Box>
             <Hidden smDown>
-              <Typography variant="h6">{contactName}</Typography>
+              <IconButton color="inherit" disabled>
+                <VideocamIcon />
+              </IconButton>
+              <IconButton color="inherit" disabled>
+                <CallIcon />
+              </IconButton>
             </Hidden>
-            <Hidden mdUp>
-              <Typography>{contactName}</Typography>
-            </Hidden>
-            <Typography>{contactStatus}</Typography>
+            <IconButton color="inherit" disabled>
+              <MoreVertIcon />
+            </IconButton>
           </Box>
-        </Box>
 
-        <Box>
-          <Hidden smDown>
-            <IconButton color="inherit" disabled>
-              <VideocamIcon />
-            </IconButton>
-            <IconButton color="inherit" disabled>
-              <CallIcon />
-            </IconButton>
-          </Hidden>
-          <IconButton color="inherit" disabled>
-            <MoreVertIcon />
-          </IconButton>
-        </Box>
-
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
+    </>
   );
 }
 

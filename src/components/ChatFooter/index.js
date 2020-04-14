@@ -84,6 +84,7 @@ function ChatFooter({ onText }) {
 
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </form>
   );
 }
