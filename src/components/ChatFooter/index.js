@@ -58,8 +58,8 @@ function ChatFooter({ onText }) {
   return (
     <form onSubmit={handleSendText}>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
-
         <Toolbar>
+
           <Paper className={classes.textFieldContainer}>
             <TextField
               className={classes.textField}
@@ -69,6 +69,7 @@ function ChatFooter({ onText }) {
               inputRef={inputEl}
             />
           </Paper>
+
           <Button
             className={classes.button}
             type="submit"
@@ -80,6 +81,7 @@ function ChatFooter({ onText }) {
           >
             Enviar
           </Button>
+
         </Toolbar>
       </AppBar>
     </form>
