@@ -29,6 +29,14 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
   },
+
+  contactNameBig: {
+    width: '600px',
+  },
+
+  contactNameSmall: {
+    width: '300px',
+  },
 }));
 
 function ChatHeader({ contactName, contactAvatar, contactStatus }) {
@@ -47,10 +55,14 @@ function ChatHeader({ contactName, contactAvatar, contactStatus }) {
             </IconButton>
             <Box>
               <Hidden smDown>
-                <Typography variant="h6">{contactName}</Typography>
+                <Typography variant="h6" noWrap className={classes.contactNameBig}>
+                  {contactName}
+                </Typography>
               </Hidden>
               <Hidden mdUp>
-                <Typography>{contactName}</Typography>
+                <Typography noWrap className={classes.contactNameSmall}>
+                  {contactName}
+                </Typography>
               </Hidden>
               <Typography>{contactStatus}</Typography>
             </Box>
