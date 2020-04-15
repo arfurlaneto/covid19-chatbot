@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -29,9 +28,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChatMessage({
-  message, isLast, handleChooseOption, userName, userAvatar, contactName, contactAvatar,
+  message,
+  isLast,
+  handleChooseOption,
+  userName,
+  userAvatar,
+  contactName,
+  contactAvatar,
+  onImageLoad,
 }) {
   const classes = useStyles();
+
+  const handleImageLoad = useCallback(() => {
+    if (isLast && onImageLoad) {
+      onImageLoad();
+    }
+  }, [isLast, onImageLoad]);
 
   return (
     <Card
@@ -45,7 +57,7 @@ function ChatMessage({
       />
 
       {message.attachment && message.attachment.type === 'image'
-            && (<CardMedia component="img" src={message.attachment.source} />)}
+            && (<CardMedia component="img" src={message.attachment.source} onLoad={handleImageLoad} />)}
 
       <CardContent>
         <Typography variant="body1" color="textSecondary" component="p">

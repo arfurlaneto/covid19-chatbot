@@ -19,9 +19,11 @@ function App({
 }) {
   const endElRef = useRef(null);
 
-  useEffect(() => {
+  function scrollToEnd() {
     endElRef.current.scrollIntoView({ behavior: 'instant' });
-  }, [messages]);
+  }
+
+  useEffect(scrollToEnd, [messages]);
 
   const handleChooseOption = useCallback((option) => {
     if (onOption) {
@@ -43,6 +45,7 @@ function App({
           userAvatar={userAvatar}
           contactName={contactName}
           contactAvatar={contactAvatar}
+          onImageLoad={scrollToEnd}
         />
       ))}
       <div style={{ float: 'left', clear: 'both' }} ref={endElRef} />
