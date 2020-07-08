@@ -14,7 +14,7 @@ yarn run start
 ## Customizando
 Para customizar as informações do bot ou do usuário, edite o arquivo `src/config.js`.
 
-Para customizar o dialógo, edite o arquivo `src/dialogs/covid19.js`.
+Para customizar o diálogo, edite o arquivo `src/dialogs/covid19.js`.
 
 Segue uma breve descrição breve do formato do arquivo:
 ```js
